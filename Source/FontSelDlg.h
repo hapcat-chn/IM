@@ -13,8 +13,12 @@ extern TCHAR g_cHotKey;						// 提取消息热键
 
 //BOOL LoadMiscConfig(LPCTSTR lpszFileName);	// 加载杂项配置
 //BOOL SaveMiscConfig(LPCTSTR lpszFileName);	// 保存杂项配置
-
-
+enum RADIOSTATE
+{
+	RADIOSTATE_IDLE,
+	RADIOSTATE_BUSY,
+	RADIOSTATE_FINISH
+};
 class CFontSelDlg : public CDialogImpl<CFontSelDlg>
 {
 public:
@@ -73,3 +77,48 @@ private:
 	CSkinComboBox		m_cboFontSize;
 	CFontInfo			m_fontInfo;
 };
+
+/*******************************************/
+class CVideoSelDlg : public CDialogImpl<CVideoSelDlg>
+{
+public:
+	CVideoSelDlg(void){};
+	~CVideoSelDlg(void){};
+
+	enum { IDD = IDD_FONTSELDLG };
+
+	BEGIN_MSG_MAP_EX(CFontSelDlg)
+		MSG_WM_INITDIALOG(OnInitDialog)
+		MSG_WM_CLOSE(OnClose)
+		MSG_WM_DESTROY(OnDestroy)
+
+		COMMAND_ID_HANDLER_EX(104, OnBtn_Bold)
+		COMMAND_ID_HANDLER_EX(105, OnBtn_Italic)
+	END_MSG_MAP()
+
+
+private:
+	BOOL OnInitDialog(CWindow wndFocus, LPARAM lInitParam);
+	void OnClose();
+	void OnDestroy();
+	void OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl);			// “加粗”按钮
+	void OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl);		// “倾斜”按钮
+
+	BOOL InitFontAttrToolBar();		// 初始化字体属性工具栏
+
+	BOOL Init();					// 初始化
+	void UnInit();					// 反初始化
+
+public:
+	CFlamingoClient*		m_pFMGClient;
+	int						m_RadioState;
+private:
+	CSkinDialog			m_SkinDlg;
+	CSkinToolBar		m_tbFontClass; 
+	CSkinToolBar		m_tbFontAttr;
+	CSkinComboBox		m_cboFontName;
+	CSkinComboBox		m_cboFontSize;
+	
+	
+};
+

@@ -1,0 +1,12 @@
+[2020-10-10 22:10:05:0211][INFO][ThreadID: 10220][__thiscall CMainDlg::CMainDlg(void):99]new CMAINDlg
+[2020-10-10 22:10:05:0642][INFO][ThreadID: 10220][int __thiscall CMainDlg::OnInitDialog(class ATL::CWindow,long):155] CMainDlg::OnInitDialog
+[2020-10-10 22:10:10:0809][INFO][ThreadID: 13360][bool __thiscall CIUSocket::Login(const char *,const char *,int,int,int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &):1118]Request logon: Account=1801, Password=*****, Status=135200208, LoginType=1.
+[2020-10-10 22:10:11:0617][INFO][ThreadID: 10420][void __thiscall CIUSocket::SendThreadProc(void):805]Recv data thread start...
+[2020-10-10 22:10:11:0617][INFO][ThreadID: 10036][void __thiscall CIUSocket::RecvThreadProc(void):853]Recv data thread start...
+[2020-10-10 22:10:11:0991][INFO][ThreadID: 10220][void __thiscall videoRecord::init(void):87]GetBufferSize        :  48000
+[2020-10-10 22:10:12:0138][INFO][ThreadID: 18304][void __thiscall videoRecord::runInLoop(void):113] videoRecord::runInLoop begin!
+[2020-10-10 22:10:12:0138][INFO][ThreadID: 19476][void __thiscall CSendMsgThread::HandleUserBasicInfo(const class CUserBasicInfoRequest *):296]Request to get userinfo.
+[2020-10-10 22:10:12:0260][INFO][ThreadID: 18304][void __thiscall videoRecord::runInLoop(void):118]video thread sleep
+[2020-10-10 22:10:12:0383][INFO][ThreadID: 16504][int __thiscall CRecvMsgThread::HandleFriendListInfo(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &):593]Recv user basic info, info count=1:
+[2020-10-10 22:10:12:0653][INFO][ThreadID: 19476][void __thiscall CSendMsgThread::HandleGroupBasicInfo(const class CGroupBasicInfoRequest *):334]Request to get group members, groupid=268435456.
+[2020-10-10 22:10:12:0789][INFO][ThreadID: 16504][int __thiscall CRecvMsgThread::HandleGroupBasicInfo(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &):671]Recv group member info, groupid=268435456, info count=2:

@@ -293,6 +293,7 @@ private:
 	CSkinToolBar		m_tbTop, m_tbMid;
 	CFaceSelDlg			m_FaceSelDlg;
 	CFontSelDlg			m_FontSelDlg;
+	CVideoSelDlg		m_VideoSelDlg;//Â¼ÒôÐ¡¿Ø¼þ
 	CPicBarDlg			m_PicBarDlg;
 	CSkinRichEdit		m_richRecv, m_richSend;
 	CChatTabMgr			m_TabMgr;

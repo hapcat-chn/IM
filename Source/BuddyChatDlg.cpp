@@ -435,7 +435,10 @@ BOOL CBuddyChatDlg::PreTranslateMessage(MSG* pMsg)
 			if (OnRichEdit_RBtnDown(pMsg))
 				return TRUE;
 		}
-
+		else if (pMsg->message == WM_LBUTTONDOWN)// 发送/接收文本框的鼠标左键按下消息
+		{	
+			//zeo todo
+		}
 		if ( (pMsg->hwnd == m_richSend.m_hWnd) && (pMsg->message == WM_KEYDOWN) 
 			&& (pMsg->wParam == 'V') && (::GetAsyncKeyState(VK_CONTROL)&0x8000) )	// 发送文本框的Ctrl+V消息
 		{
@@ -1177,7 +1180,47 @@ void CBuddyChatDlg::OnBtn_RemoteDesktop(UINT uNotifyCode, int nID, CWindow wndCt
     //HANDLE hRemoteDesktopThread = (HANDLE)::_beginthreadex(NULL, 0, RemoteDesktopProc, this, 0, NULL);
     //::CloseHandle(hRemoteDesktopThread);
 }
+void CBuddyChatDlg::OnVoiceMsg(UINT uNotifyCode, int nID, CWindow wndCtl){
+	RECT rtRichRecv;
+	::GetWindowRect(m_richRecv, &rtRichRecv);
+	::ScreenToClient(m_hWnd, rtRichRecv);	
+		
+		//m_richRecv.MoveWindow(6, 106, rtRichRecv.right-rtRichRecv.left, rtRichRecv.bottom-rtRichRecv.top-32, TRUE);
+			
+		if(m_lpFMGClient){
+			int ret = -1;
+			if(m_VideoSelDlg.m_RadioState != RADIOSTATE_FINISH)
+				ret = m_lpFMGClient->m_videoRecord.changeState(m_UserId);
+			else{
+				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            			☆请您选择是否发送本次录音后，再启动新的录音☆\r\n"), 
+				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+				return;
+			}
+			
+			if(ret == 1){
+				m_VideoSelDlg.m_RadioState = RADIOSTATE_BUSY;
+				RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
+				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆正在录音，再次点击录音按钮结束录音☆\r\n"), 
+				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+				LOG_INFO("thread");
+				
+			}else if(ret == 0){
+				m_VideoSelDlg.ShowWindow(SW_SHOW);
+				m_VideoSelDlg.MoveWindow(6, rtRichRecv.bottom-32, rtRichRecv.right-rtRichRecv.left, 32, TRUE);
+				m_VideoSelDlg.m_RadioState = RADIOSTATE_FINISH;
+				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            					☆录音结束，请选择是否发送☆\r\n"), 
+				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+				
+			}else{
 
+				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            			☆录音设备忙,请您稍后重试☆\r\n"), 
+				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+				
+			}
+		}
+		//m_videoRecord.recordOneTime();
+
+}
 // “字体选择工具栏”按钮
 void CBuddyChatDlg::OnBtn_Font(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
@@ -1258,31 +1301,7 @@ void CBuddyChatDlg::OnShakeWindow(UINT uNotifyCode, int nID, CWindow wndCtl)
 }
 
 
-void CBuddyChatDlg::OnVoiceMsg(UINT uNotifyCode, int nID, CWindow wndCtl){
-		if(m_lpFMGClient){
-			int ret = m_lpFMGClient->m_videoRecord.changeState(m_UserId);
-			if(ret == 1){
 
-				RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
-				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆正在录音，再次点击录音按钮结束录音☆\r\n"), 
-				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
-				LOG_INFO("thread");
-				
-			}else if(ret == 0){
-
-				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            					☆录音结束☆\r\n"), 
-				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
-				
-			}else{
-
-				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            			录音设备忙,请您稍后重试\r\n"), 
-				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
-				
-			}
-		}
-		//m_videoRecord.recordOneTime();
-
-}
 // “发送图片”按钮
 void CBuddyChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
@@ -3147,6 +3166,13 @@ BOOL CBuddyChatDlg::Init()
 		m_FontSelDlg.Create(m_hWnd);
 		m_FontSelDlg.ShowWindow(SW_HIDE);
 	}
+	
+	if(!m_VideoSelDlg.IsWindow())
+	{
+		m_VideoSelDlg.Create(m_hWnd);
+		m_VideoSelDlg.ShowWindow(SW_HIDE);
+	}
+	
 	
 	InitRightTabWindow();
 

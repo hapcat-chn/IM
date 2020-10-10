@@ -106,8 +106,21 @@ BOOL CFontSelDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	ModifyStyle(WS_CLIPSIBLINGS|WS_CLIPCHILDREN, 0);
 	return FALSE;
 }
+BOOL CVideoSelDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
+{
+	Init();		// 初始化
+
+	ModifyStyle(WS_CLIPSIBLINGS|WS_CLIPCHILDREN, 0);
+	return FALSE;
+}
+
 
 void CFontSelDlg::OnClose()
+{
+	DestroyWindow();
+}
+
+void CVideoSelDlg::OnClose()
 {
 	DestroyWindow();
 }
@@ -116,6 +129,11 @@ void CFontSelDlg::OnDestroy()
 {
 	UnInit();	// 反初始化
 }
+void CVideoSelDlg::OnDestroy()
+{
+	UnInit();	// 反初始化
+}
+
 
 // “系统字体”按钮
 void CFontSelDlg::OnBtn_SysFont(UINT uNotifyCode, int nID, CWindow wndCtl)
@@ -186,6 +204,12 @@ void CFontSelDlg::OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl)
 		}
 	}
 }
+void CVideoSelDlg::OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl)
+{
+	ShowWindow(SW_HIDE);
+	m_RadioState = RADIOSTATE_IDLE;
+}
+
 
 // “倾斜”按钮
 void CFontSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
@@ -201,6 +225,11 @@ void CFontSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
 			::PostMessage(GetParent(), WM_UPDATE_FONTINFO, NULL, NULL);
 		}
 	}
+}
+void CVideoSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
+{
+	ShowWindow(SW_HIDE);
+	m_RadioState = RADIOSTATE_IDLE;
 }
 
 // “下划线”按钮
@@ -396,6 +425,35 @@ BOOL CFontSelDlg::InitFontAttrToolBar()
 	m_tbFontAttr.SetItemCheckState(2, m_fontInfo.m_bUnderLine);
 	return TRUE;
 }
+BOOL CVideoSelDlg::InitFontAttrToolBar()
+{
+	int nIndex = m_tbFontAttr.AddItem(104, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
+	m_tbFontAttr.SetItemSize(nIndex, 30, 24);
+	m_tbFontAttr.SetItemPadding(nIndex, 0);
+	m_tbFontAttr.SetItemToolTipText(nIndex, _T("发送录音"));
+	m_tbFontAttr.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
+		_T("aio_toolbar_down.png"), CRect(3,3,3,3));
+	m_tbFontAttr.SetItemIconPic(nIndex, _T("MidToolBar\\Bold.png"));
+
+	nIndex = m_tbFontAttr.AddItem(105, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
+	m_tbFontAttr.SetItemSize(nIndex, 30, 24);
+	m_tbFontAttr.SetItemPadding(nIndex, 0);
+	m_tbFontAttr.SetItemToolTipText(nIndex, _T("放弃录音"));
+	m_tbFontAttr.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
+		_T("aio_toolbar_down.png"), CRect(3,3,3,3));
+	m_tbFontAttr.SetItemIconPic(nIndex, _T("MidToolBar\\Italic.png"));
+
+
+	m_tbFontAttr.SetTransparent(TRUE, m_SkinDlg.GetBgDC());
+
+	CRect rcFontAttr(217 - 48, 6, 217+104, 6+32);
+	m_tbFontAttr.Create(m_hWnd, rcFontAttr, NULL, WS_CHILD|WS_VISIBLE, NULL, ID_TOOLBAR_FONTATTR);
+
+	//m_tbFontAttr.SetItemCheckState(0, m_fontInfo.m_bBold);
+	//m_tbFontAttr.SetItemCheckState(1, m_fontInfo.m_bItalic);
+	//m_tbFontAttr.SetItemCheckState(2, m_fontInfo.m_bUnderLine);
+	return TRUE;
+}
 
 // 初始化
 BOOL CFontSelDlg::Init()
@@ -419,6 +477,20 @@ BOOL CFontSelDlg::Init()
 	return TRUE;
 }
 
+BOOL CVideoSelDlg::Init()
+{
+
+	m_RadioState = RADIOSTATE_IDLE;
+	m_SkinDlg.SubclassWindow(m_hWnd);
+	m_SkinDlg.SetBgPic(_T("ChatFrame_FontSetup_background.bmp"), CRect(0, 1, 1, 0));
+	
+	//InitFontClassToolBar();		// 初始化字体分类工具栏
+	//InitFontNameComboBox();		// 初始化字体名称组合框
+	//InitFontSizeComboBox();		// 初始化字体大小组合框
+	InitFontAttrToolBar();		// 初始化字体属性工具栏
+
+	return TRUE;
+}
 // 反初始化
 void CFontSelDlg::UnInit()
 {
@@ -434,3 +506,13 @@ void CFontSelDlg::UnInit()
 	if (m_cboFontSize.IsWindow())
 		m_cboFontSize.DestroyWindow();
 }
+void CVideoSelDlg::UnInit()
+{
+
+
+	if (m_tbFontAttr.IsWindow())
+		m_tbFontAttr.DestroyWindow();
+
+
+}
+
