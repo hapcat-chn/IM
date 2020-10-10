@@ -1,0 +1,2 @@
+---- ☆录音结束☆ Matches (1 in 1 files) ----
+CBuddyChatDlg::OnVoiceMsg in BuddyChatDlg.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆录音结束☆\r\n"), 
