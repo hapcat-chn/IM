@@ -6,7 +6,7 @@
 #include <condition_variable>
 #include <thread>
 #include "IULog.h"
-
+//
 using namespace std;
 #define REFTIMES_PER_SEC       (10000000)
 #define REFTIMES_PER_MILLISEC  (10000)
@@ -35,7 +35,7 @@ struct WAVEHEADER
 };
 
 //  Static RIFF header, we'll append the format to it.
-
+class CBuddyChatDlg;
 
 class videoRecord {
 public:
@@ -46,7 +46,7 @@ public:
 	bool recordOneTime();
 	void SaveWaveData(BYTE* CaptureBuffer, size_t BufferSize, const WAVEFORMATEX* WaveFormat);
 	bool WriteWaveFile(HANDLE FileHandle, const BYTE* Buffer, const size_t BufferSize, const WAVEFORMATEX* WaveFormat);
-	int changeState(int userId)//仅其他线程调用
+	int changeState(int userId , CBuddyChatDlg* BuddyChatDlg)//仅其他线程调用
 	{
 		
         std::lock_guard<std::mutex> guard(m_mutexProtectRecord);
@@ -60,6 +60,7 @@ public:
 			m_UserId = -1;
 			return 0;
 		}
+		m_CBuddyChatDlg = BuddyChatDlg;
 		m_UserId = userId;
 		stillPlaying = true;
 		m_cvVideo.notify_one();
@@ -74,6 +75,7 @@ public:
 	bool   							stillPlaying;
 private:
 	std::unique_ptr<std::thread>    m_videoThread;
+	CBuddyChatDlg*				    m_CBuddyChatDlg = NULL;//zeo todo 可以用weak ptr
 	BOOL							m_stop;
 	int								m_UserId;
 

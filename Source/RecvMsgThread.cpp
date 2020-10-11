@@ -83,7 +83,7 @@ tstring FormatContent(std::vector<CContent*>& arrContent)
 
 		case CONTENT_TYPE_FILE:
 			{
-				strMsg += _T("发送文件：[");
+				strMsg += _T("发送给我的文件：[");
 				memset(cBuf, 0, sizeof(cBuf));
 				wsprintf(cBuf, lpFileFmt, lpContent->m_CFaceInfo.m_strFileName.c_str());
 				strMsg += cBuf;

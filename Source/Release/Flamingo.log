@@ -1,0 +1,195 @@
+﻿  stdafx.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlgdi.h(470,66): warning C4838: 从“int”转换到“UINT”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlgdi.h(477,66): warning C4838: 从“int”转换到“UINT”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlgdi.h(484,66): warning C4838: 从“int”转换到“UINT”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlgdi.h(491,66): warning C4838: 从“int”转换到“UINT”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlgdi.h(3683,62): warning C4838: 从“LONG”转换到“DWORD”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(3359,39): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(3356): message : 在编译 类 模板 成员函数“void WTL::CSortListViewImpl<T>::NotifyParentSortChanged(int,int)”时
+          with
+          [
+              T=WTL::CSortListViewCtrl
+          ]
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(3753): message : 查看对正在编译的函数 模板 实例化“void WTL::CSortListViewImpl<T>::NotifyParentSortChanged(int,int)”的引用
+          with
+          [
+              T=WTL::CSortListViewCtrl
+          ]
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(3790): message : 查看对正在编译的 类 模板 实例化“WTL::CSortListViewImpl<T>”的引用
+          with
+          [
+              T=WTL::CSortListViewCtrl
+          ]
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(3809): message : 查看对正在编译的 类 模板 实例化“WTL::CSortListViewCtrlImpl<WTL::CSortListViewCtrl,WTL::CListViewCtrl,WTL::CSortListViewCtrlTraits>”的引用
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(1144,1): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(1139): message : 在编译 类 模板 成员函数“bool WTL::CHyperLinkImpl<WTL::CHyperLink,ATL::CWindow,ATL::CControlWinTraits>::Navigate(void)”时
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(1386): message : 查看对正在编译的函数 模板 实例化“bool WTL::CHyperLinkImpl<WTL::CHyperLink,ATL::CWindow,ATL::CControlWinTraits>::Navigate(void)”的引用
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0\atlctrlx.h(1883): message : 查看对正在编译的 类 模板 实例化“WTL::CHyperLinkImpl<WTL::CHyperLink,ATL::CWindow,ATL::CControlWinTraits>”的引用
+  AboutDlg.cpp
+  AddFriendConfirmDlg.cpp
+  BuddyChatDlg.cpp
+  BuddyInfoDlg.cpp
+  BuddyInfoFloatWnd.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\BuddyInfoFloatWnd.cpp(176,39): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+  BuddyListCtrl.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\BuddyListCtrl.cpp(912,39): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+  Buffer.cpp
+  CascadeWinManager.cpp
+  ChangePicHeadDlg.cpp
+  ChatDlgCommon.cpp
+  ChatTabMgr.cpp
+  CheckNetworkStatusTask.cpp
+  ClosePromptDlg.cpp
+  Crash.cpp
+  CreateNewGroupDlg.cpp
+  CriticalSection.cpp
+  EncodeUtil.cpp
+  FaceCtrl.cpp
+  FaceList.cpp
+  FaceSelDlg.cpp
+  正在生成代码...
+  正在编译...
+  File.cpp
+  File2.cpp
+  FileTaskThread.cpp
+  FileTransferCtrl.cpp
+  FindFriendDlg.cpp
+  FontSelDlg.cpp
+  GDIFactory.cpp
+  GifImage.cpp
+  GroupChatDlg.cpp
+  GroupInfoDlg.cpp
+  HeartbeatTask.cpp
+  ImageEx.cpp
+  ImageTaskThread.cpp
+  IniFile.cpp
+  IULog.cpp
+  json_reader.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\jsoncpp-1.9.0\json_reader.cpp(1910,58): warning C4244: “=”: 从“Json::Value::UInt64”转换到“size_t”，可能丢失数据
+  json_value.cpp
+  json_writer.cpp
+  LoginAccountList.cpp
+  LoginDlg.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\LoginDlg.cpp(595,22): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+  正在生成代码...
+  正在编译...
+  LoginSettingsDlg.cpp
+  LogonUserInfoDlg.cpp
+  MainDlg.cpp
+  MD5.cpp
+  MD5Sum.cpp
+  MessageLogger.cpp
+  MinuBuffer.cpp
+  MobileStatusDlg.cpp
+  ModifyMarkNameDlg.cpp
+  ModifyPasswordDlg.cpp
+  MsgTipDlg.cpp
+  MultiChatDlg.cpp
+  MultiChatMemberSelectionDlg.cpp
+  IUProtocolData.cpp
+  IUSocket.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\net\IUSocket.cpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\net\IUSocket.cpp(967,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  protocolstream.cpp
+  Path.cpp
+  PerformanceCounter.cpp
+  PicBarDlg.cpp
+  RecentListCtrl.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecentListCtrl.cpp(856,39): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecentListCtrl.cpp(919,40): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+  正在生成代码...
+  正在编译...
+  RecvMsgThread.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(466,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(493,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(620,160): warning C4474: sprintf_s: 格式字符串中传递的参数太多
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(620,160): message : 占位符和其参数预计 1 可变参数，但提供的却是 2 参数
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(583,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(661,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(722,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(750,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(800,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(885,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(919,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(947,18): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RecvMsgThread.cpp(1031,15): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+  RegisterDialog.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RegisterDialog.cpp(129,22): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+  RemoteDesktopDlg.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktopDlg.cpp(686,37): warning C4018: “>”: 有符号/无符号不匹配
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktopDlg.cpp(689,38): warning C4018: “>”: 有符号/无符号不匹配
+  ScreenManager.cpp
+  ScreenSpy.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktop\ScreenSpy.cpp(373,14): warning C4018: “>”: 有符号/无符号不匹配
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktop\ScreenSpy.cpp(368,6): warning C4101: “nToJump”: 未引用的局部变量
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktop\ScreenSpy.cpp(394,20): warning C4018: “<”: 有符号/无符号不匹配
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktop\ScreenSpy.cpp(413,21): warning C4018: “<”: 有符号/无符号不匹配
+  until.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktop\until.cpp(163,10): warning C4996: 'GetVersionExW': 被声明为已否决
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\RemoteDesktop\until.cpp(166,14): warning C4996: 'GetVersionExW': 被声明为已否决
+  RichEditUtil.cpp
+  SendMsgThread.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\SendMsgThread.cpp(237,22): warning C4996: 'Json::Reader::Reader': Use CharReader and CharReaderBuilder instead
+  SessChatDlg.cpp
+  SkinButton.cpp
+  SkinComboBox.cpp
+  SkinDialog.cpp
+  SkinEdit.cpp
+  SkinHyperLink.cpp
+  SkinListCtrl.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\SkinLib\SkinListCtrl.cpp(996,47): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\SkinLib\SkinListCtrl.cpp(1108,47): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+  SkinManager.cpp
+  SkinMenu.cpp
+  SkinMessageBox.cpp
+  SkinPictureBox.cpp
+  SkinRichEdit.cpp
+  正在生成代码...
+  正在编译...
+  SkinScrollBar.cpp
+  SkinStatic.cpp
+  SkinTabCtrl.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\SkinLib\SkinTabCtrl.cpp(388,39): warning C4838: 从“int”转换到“UINT_PTR”需要收缩转换
+  SkinToolBar.cpp
+  SkinWebBrowser.cpp
+  SplitterCtrl.cpp
+  Startup.cpp
+  SystemSettingDlg.cpp
+  TeamDlg.cpp
+  Thread.cpp
+  ThreadPool.cpp
+  Time.cpp
+  TrayIcon.cpp
+  UpdateDlg.cpp
+  Updater.cpp
+  UserConfig.cpp
+  UserSessionData.cpp
+  UserSnapInfoDlg.cpp
+  FlamingoClient.cpp
+  UserMgr.cpp
+  正在生成代码...
+  正在编译...
+  Utils.cpp
+  videoRecord.cpp
+E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\videoRecord.cpp(8,1): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
+  XmlDocument.cpp
+  ZlibUtil.cpp
+  正在生成代码...
+  adler32.c
+  compress.c
+  crc32.c
+  deflate.c
+  gzclose.c
+  gzlib.c
+  gzread.c
+  gzwrite.c
+  infback.c
+  inffast.c
+  inflate.c
+  inftrees.c
+  trees.c
+  uncompr.c
+  zlibdemo.c
+  zutil.c
+  正在生成代码...
+  Flamingo.vcxproj -> E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\..\bin\Flamingo.exe

@@ -438,6 +438,8 @@ BOOL CBuddyChatDlg::PreTranslateMessage(MSG* pMsg)
 		else if (pMsg->message == WM_LBUTTONDOWN)// 发送/接收文本框的鼠标左键按下消息
 		{	
 			//zeo todo
+			if (OnRichEdit_LBtnDblClk(pMsg))
+				return TRUE;
 		}
 		if ( (pMsg->hwnd == m_richSend.m_hWnd) && (pMsg->message == WM_KEYDOWN) 
 			&& (pMsg->wParam == 'V') && (::GetAsyncKeyState(VK_CONTROL)&0x8000) )	// 发送文本框的Ctrl+V消息
@@ -1184,13 +1186,13 @@ void CBuddyChatDlg::OnVoiceMsg(UINT uNotifyCode, int nID, CWindow wndCtl){
 	RECT rtRichRecv;
 	::GetWindowRect(m_richRecv, &rtRichRecv);
 	::ScreenToClient(m_hWnd, rtRichRecv);	
-		
+
 		//m_richRecv.MoveWindow(6, 106, rtRichRecv.right-rtRichRecv.left, rtRichRecv.bottom-rtRichRecv.top-32, TRUE);
 			
 		if(m_lpFMGClient){
 			int ret = -1;
 			if(m_VideoSelDlg.m_RadioState != RADIOSTATE_FINISH)
-				ret = m_lpFMGClient->m_videoRecord.changeState(m_UserId);
+				ret = m_lpFMGClient->m_videoRecord.changeState(m_UserId,this);
 			else{
 				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            			☆请您选择是否发送本次录音后，再启动新的录音☆\r\n"), 
 				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
@@ -1199,6 +1201,7 @@ void CBuddyChatDlg::OnVoiceMsg(UINT uNotifyCode, int nID, CWindow wndCtl){
 			
 			if(ret == 1){
 				m_VideoSelDlg.m_RadioState = RADIOSTATE_BUSY;
+				m_VideoSelDlg.m_CBuddyChatDlg = this;
 				RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
 				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆正在录音，再次点击录音按钮结束录音☆\r\n"), 
 				_T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
@@ -2914,14 +2917,21 @@ LRESULT CBuddyChatDlg::OnClickTabMgr(LPNMHDR pnmh)
 
 	return 1;
 }
-
+void showPFILE_TRANSFER_NMHDREX(PFILE_TRANSFER_NMHDREX pNMHDREx)
+{
+	LOG_INFO("HITTEST_BTN_AREA %d ,pNMHDREx.nID %d ,pNMHDREx.nmhdr %d , FILE_TARGET_TYPE %d", \
+			pNMHDREx->btnArea, pNMHDREx->nID, pNMHDREx->nmhdr, pNMHDREx->nTargetType);
+	return;
+}
 LRESULT CBuddyChatDlg::OnBtn_FileTransfer(LPNMHDR pnmh)
 {
 	PFILE_TRANSFER_NMHDREX pNMHDREx = (PFILE_TRANSFER_NMHDREX)pnmh;
+	
 	if(pNMHDREx== NULL || pNMHDREx->btnArea==BTN_NONE || pNMHDREx->nID<0)
 		return 0;
 
 	CString strFileName( m_FileTransferCtrl.GetItemFileNameByID(pNMHDREx->nID));
+	showPFILE_TRANSFER_NMHDREX(pNMHDREx);
 	if(strFileName == "")
 	{
 		m_FileTransferCtrl.RemoveItemByID(pNMHDREx->nID);
@@ -2967,6 +2977,7 @@ LRESULT CBuddyChatDlg::OnBtn_FileTransfer(LPNMHDR pnmh)
 	}
 	
 	CStringA strDownloadName(m_FileTransferCtrl.GetItemDownloadNameByID(pNMHDREx->nID));
+	showPFILE_TRANSFER_NMHDREX(pNMHDREx);
 	CFileItemRequest* pFileItemRequest = NULL;
 	pFileItemRequest = new CFileItemRequest();
 	pFileItemRequest->m_hCancelEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -3010,7 +3021,7 @@ LRESULT CBuddyChatDlg::OnBtn_FileTransfer(LPNMHDR pnmh)
 
 	m_FileTransferCtrl.SetItemSaveNameByID(pNMHDREx->nID, pFileItemRequest->m_szFilePath);
 	m_FileTransferCtrl.SetFileItemRequestByID(pNMHDREx->nID, pFileItemRequest);
-
+	showPFILE_TRANSFER_NMHDREX(pNMHDREx);
 	pFileItemRequest->m_nID = pNMHDREx->nID;
 	pFileItemRequest->m_hwndReflection = m_hWnd;
 	pFileItemRequest->m_nFileType = FILE_ITEM_DOWNLOAD_CHAT_OFFLINE_FILE;
@@ -3173,7 +3184,7 @@ BOOL CBuddyChatDlg::Init()
 		m_VideoSelDlg.ShowWindow(SW_HIDE);
 	}
 	
-	
+	m_VideoSelDlg.m_CBuddyChatDlg = this;
 	InitRightTabWindow();
 
 
@@ -4011,12 +4022,14 @@ void CBuddyChatDlg::AddMsgToRecvEdit(std::vector<CContent*>& arrContent)
 			{
 			case CONTENT_TYPE_SHAKE_WINDOW:
 				{
+					//RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("****WINDOW"), _T("微软雅黑"), 10,  0, TRUE, FALSE, FALSE, FALSE, 300);
 					RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("抖了您一下。"), _T("微软雅黑"), 10,  0, TRUE, FALSE, FALSE, FALSE, 300);
 				}
 				break;
 
 			case CONTENT_TYPE_FONT_INFO:
 				{
+					//RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("****FONT_INFO"), _T("微软雅黑"), 10,  0, TRUE, FALSE, FALSE, FALSE, 300);
 					fontInfo.m_strName = lpContent->m_FontInfo.m_strName;
 					fontInfo.m_nSize = lpContent->m_FontInfo.m_nSize;
 					fontInfo.m_clrText = lpContent->m_FontInfo.m_clrText;
@@ -4028,10 +4041,22 @@ void CBuddyChatDlg::AddMsgToRecvEdit(std::vector<CContent*>& arrContent)
 
 			case CONTENT_TYPE_TEXT:
 				{
+					//RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("****TYPE_TEXT"), _T("微软雅黑"), 10,  0, TRUE, FALSE, FALSE, FALSE, 300);
 					RichEdit_ReplaceSel(m_richRecv.m_hWnd, lpContent->m_strText.c_str(), 
 						fontInfo.m_strName.c_str(), fontInfo.m_nSize, 
 						fontInfo.m_clrText, fontInfo.m_bBold, fontInfo.m_bItalic, 
 						fontInfo.m_bUnderLine, FALSE, 300);
+					/*
+					TCHAR szInfo[MAX_PATH] = { 0 };
+					memset(szInfo, 0, sizeof(szInfo));
+					_stprintf_s(szInfo, ARRAYSIZE(szInfo), _T("                                            ☆文件保存位置："));
+					RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
+					RichEdit_ReplaceSel(m_richRecv.m_hWnd, szInfo, _T("微软雅黑"), 10, RGB(0, 0, 0), FALSE, FALSE, FALSE, FALSE, 0);
+					memset(szInfo, 0, sizeof(szInfo));
+					_stprintf_s(szInfo, ARRAYSIZE(szInfo), _T("%s"), lpContent->m_strText.c_str());
+					//RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
+					RichEdit_ReplaceSel(m_richRecv.m_hWnd, szInfo, _T("微软雅黑"), 10, RGB(0, 0, 0), FALSE, FALSE, TRUE, TRUE, 0);
+					*/
 				}
 				break;
 
@@ -4065,10 +4090,12 @@ void CBuddyChatDlg::AddMsgToRecvEdit(std::vector<CContent*>& arrContent)
 				break;
 
 			case CONTENT_TYPE_FILE:
+				//RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("****FILE"), _T("微软雅黑"), 10,  0, TRUE, FALSE, FALSE, FALSE, 300);
 				RichEdit_ReplaceSel(m_richRecv.m_hWnd, lpContent->m_CFaceInfo.m_strFileName.c_str(), 
 						fontInfo.m_strName.c_str(), fontInfo.m_nSize, 
 						fontInfo.m_clrText, fontInfo.m_bBold, fontInfo.m_bItalic, 
-						fontInfo.m_bUnderLine, FALSE, 300);
+						TRUE ,TRUE, 300);
+				m_richRecv.SetAutoURLDetect(TRUE);
 				break;
 			}
 		}
@@ -4516,15 +4543,19 @@ LRESULT CBuddyChatDlg::OnRecvFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			_stprintf_s(szInfo, ARRAYSIZE(szInfo), _T("%s"), pFileItem->m_szFilePath);
 			//RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
 			RichEdit_ReplaceSel(m_richRecv.m_hWnd, szInfo, _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, TRUE, TRUE, 0);
+
+			/*
 			memset(szInfo, 0, sizeof(szInfo));
 			_stprintf_s(szInfo, ARRAYSIZE(szInfo), _T("%s ☆\r\n"), pFileItem->m_szFilePath);
 			//RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
 			RichEdit_ReplaceSel(m_richRecv.m_hWnd, szInfo, _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+			*/
 			m_richRecv.SetAutoURLDetect(TRUE);
 
 			time_t nTime = time(NULL);
 			CString strSuccessfulInfo;
-			strSuccessfulInfo.Format(_T("%s已成功接收文件[%s]."), m_strUserName.GetString(), ::PathFindFileName(pFileItem->m_szFilePath));
+			strSuccessfulInfo.Format(_T("%s"), pFileItem->m_szFilePath);
+			//strSuccessfulInfo.Format(_T("%s已成功接收文件[%s]."), m_strUserName.GetString(), ::PathFindFileName(pFileItem->m_szFilePath));
             m_lpFMGClient->SendBuddyMsg(m_LoginUserId, m_strUserName.GetString(), m_UserId, m_strBuddyName.GetString(), nTime, strSuccessfulInfo.GetString(), m_hWnd);
 		}
 		else if(wParam == RECV_FILE_FAILED)

@@ -18,6 +18,11 @@
 #include "videoRecord.h"
 #include <mmsystem.h>
 #pragma comment(lib,"winmm")
+#if defined(UNICODE) || defined(_UNICODE)
+typedef std::wstring tstring;
+#else
+typedef std::string tstring;
+#endif
 
 class CFlamingoClient;
 class CBuddyChatDlg : public CDialogImpl<CBuddyChatDlg>, public CMessageFilter
@@ -80,6 +85,7 @@ public:
 		NOTIFY_HANDLER_EX(ID_CHAT_TAB_MGR, NM_CLICK, OnClickTabMgr)
 		NOTIFY_HANDLER_EX(ID_FILE_TRANSFER, NM_CLICK, OnBtn_FileTransfer)
 
+
 		MESSAGE_HANDLER_EX(WM_UPDATE_FONTINFO, OnUpdateFontInfo)
 		MESSAGE_HANDLER_EX(FACE_CTRL_SEL, OnFaceCtrlSel)
 		MESSAGE_HANDLER_EX(WM_SETDLGINITFOCUS, OnSetDlgInitFocus)
@@ -118,6 +124,13 @@ public:
 	void OnUpdateBuddyNumber();													// 更新好友号码通知
 	void OnUpdateBuddySign();													// 更新好友签名通知
 	void OnUpdateBuddyHeadPic();												// 更新好友头像通知
+	void sendVoiceMsg(bool isSend) {
+		if(isSend){
+			RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆语音消息发送中☆\n"), _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+			SendOfflineFile((PCTSTR)m_voiceFileName.c_str()); 
+		}else
+			RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆取消发送语音☆\n"), _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+	}
 
 	BOOL IsFilesTransferring();
 
@@ -278,7 +291,7 @@ public:
 	int				    m_nUTalkUin;                
     int                 m_UserId;                   //当前聊天好友id
     int                 m_LoginUserId;              //登录用户id
-
+	tstring				m_voiceFileName;
 private:
 	//videoRecord			m_videoRecord;
 	CSkinDialog			m_SkinDlg;							
@@ -309,7 +322,7 @@ private:
 	CProgressBarCtrl	m_ProgressSendFile;			//文件进度条
 	CSkinHyperLink		m_lnkSendOffline;			//转离线发送按钮
 	CSkinHyperLink		m_lnkSendFileCancel;		//取消发送按钮
-
+	
 	CFileTransferCtrl	m_FileTransferCtrl;
 
 	CRect				m_rcTitleBar;

@@ -4,7 +4,8 @@
 #include "SkinLib/SkinLib.h"
 #include "FlamingoClient.h"
 #include "Utils.h"
-#include "FontSelDlg.h"
+//#include "FontSelDlg.h"
+//#include "BuddyChatDlg.h"
 
 #define		WM_UPDATE_FONTINFO		WM_USER + 2
 
@@ -111,8 +112,11 @@ private:
 
 public:
 	CFlamingoClient*		m_pFMGClient;
+	CBuddyChatDlg*			m_CBuddyChatDlg;
 	int						m_RadioState;
+	tstring					m_voiceFileName;
 private:
+	
 	CSkinDialog			m_SkinDlg;
 	CSkinToolBar		m_tbFontClass; 
 	CSkinToolBar		m_tbFontAttr;

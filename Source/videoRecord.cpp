@@ -1,6 +1,6 @@
 #include"stdafx.h"
 #include"videoRecord.h"
-
+#include "BuddyChatDlg.h"
 #include "path.h"
 #include<winerror.h>
 #include <functional>
@@ -371,7 +371,7 @@ void videoRecord::SaveWaveData(BYTE* CaptureBuffer, size_t BufferSize, const WAV
 		strFileName.push_back(waveFileName[i]);
 	LOG_INFO(strFileName.c_str());
 	::sndPlaySound(strFileName.c_str(), SND_ASYNC);
-
+	m_CBuddyChatDlg->m_voiceFileName = strFileName;
 }
 
 

@@ -27,6 +27,7 @@ typedef struct tagFileTransferNMHDREx
 	FILE_TARGET_TYPE	nTargetType;
 	HITTEST_BTN_AREA	btnArea;
 	long				nID;
+	
 }FILE_TRANSFER_NMHDREX,*PFILE_TRANSFER_NMHDREX;
 
 class CFileTransferItem

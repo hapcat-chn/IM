@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "FontSelDlg.h"
-
+#include "BuddyChatDlg.h"
 CFontInfo g_fontInfo;		// 字体信息
 TCHAR g_cHotKey = _T('D');	// 提取消息热键
 
@@ -208,6 +208,7 @@ void CVideoSelDlg::OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	ShowWindow(SW_HIDE);
 	m_RadioState = RADIOSTATE_IDLE;
+	m_CBuddyChatDlg->sendVoiceMsg(true);
 }
 
 
@@ -230,6 +231,7 @@ void CVideoSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	ShowWindow(SW_HIDE);
 	m_RadioState = RADIOSTATE_IDLE;
+	m_CBuddyChatDlg->sendVoiceMsg(false);
 }
 
 // “下划线”按钮
