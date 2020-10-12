@@ -1,2 +1,0 @@
-[2020-10-11 20:12:46:0514][INFO][ThreadID: 15144][__thiscall CMainDlg::CMainDlg(void):99]new CMAINDlg
-[2020-10-11 20:12:46:0725][INFO][ThreadID: 15144][int __thiscall CMainDlg::OnInitDialog(class ATL::CWindow,long):155] CMainDlg::OnInitDialog

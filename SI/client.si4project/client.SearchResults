@@ -1,4 +1,11 @@
----- sendVoiceMsg Matches (3 in 2 files) ----
-CBuddyChatDlg in BuddyChatDlg.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	void sendVoiceMsg(bool isSend) {
-CVideoSelDlg::OnBtn_Bold in FontSelDlg.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	m_CBuddyChatDlg->sendVoiceMsg();
-CVideoSelDlg::OnBtn_Italic in FontSelDlg.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	//m_CBuddyChatDlg->sendVoiceMsg();
+---- m_haveRadioRes Matches (10 in 2 files) ----
+videoRecord::videoRecord in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	m_haveRadioRes = false;
+videoRecord::reset in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_haveRadioRes = false;
+videoRecord::reset in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	m_haveRadioRes = true;
+videoRecord::init in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_haveRadioRes = false;
+videoRecord::init in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	m_haveRadioRes = true;
+videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 			m_haveRadioRes = false;
+videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		else if (m_haveRadioRes == false) {
+videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 			m_haveRadioRes = true;
+videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		return m_haveRadioRes;
+videoRecord in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	BOOL							m_haveRadioRes;

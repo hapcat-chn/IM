@@ -1188,8 +1188,13 @@ void CBuddyChatDlg::OnVoiceMsg(UINT uNotifyCode, int nID, CWindow wndCtl){
 	::ScreenToClient(m_hWnd, rtRichRecv);	
 
 		//m_richRecv.MoveWindow(6, 106, rtRichRecv.right-rtRichRecv.left, rtRichRecv.bottom-rtRichRecv.top-32, TRUE);
-			
+		if(m_lpFMGClient->m_videoRecord.queryRadioRes() == FALSE && m_VideoSelDlg.m_RadioState == RADIOSTATE_IDLE){
+			RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            			¡îÇë¼ì²éÂ¼ÒôÉè±¸ºóÖØÊÔ¡î\r\n"), 
+			_T("Î¢ÈíÑÅºÚ"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+			return;
+		}	
 		if(m_lpFMGClient){
+			
 			int ret = -1;
 			if(m_VideoSelDlg.m_RadioState != RADIOSTATE_FINISH)
 				ret = m_lpFMGClient->m_videoRecord.changeState(m_UserId,this);
@@ -1200,6 +1205,7 @@ void CBuddyChatDlg::OnVoiceMsg(UINT uNotifyCode, int nID, CWindow wndCtl){
 			}
 			
 			if(ret == 1){
+
 				m_VideoSelDlg.m_RadioState = RADIOSTATE_BUSY;
 				m_VideoSelDlg.m_CBuddyChatDlg = this;
 				RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);

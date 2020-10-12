@@ -20,7 +20,10 @@ const BYTE WaveHeader[] =
 const BYTE WaveData[] = { 'd', 'a', 't', 'a' };
 
 videoRecord::videoRecord(){
-	
+	m_haveRadioRes = false;
+	  stillPlaying = false;
+	  m_ini        = false;
+	  m_stop       = true;
 };
 videoRecord::~videoRecord(){
 	
@@ -36,8 +39,8 @@ videoRecord::~videoRecord(){
 
 		CoUninitialize();
 };
-void videoRecord::init() {
-	stillPlaying = false;
+void videoRecord::reset() {
+
 
 /*
 	hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
@@ -46,19 +49,17 @@ void videoRecord::init() {
 		LOG_INFO("Unable to initialize COM in thread: %x\n", hr);
 		return ;
 	}*/
-	hr = CoCreateInstance(CLSID_MMDeviceEnumerator,
-		NULL,
-		CLSCTX_ALL,
-		IID_IMMDeviceEnumerator,
-		(void**)&pEnumerator);
+
+
+	LOG_INFO("GetDefaultAudioEndpoint : %d",hr);
 	EXIT_ON_ERROR(hr)
-	
-	hr = pEnumerator->GetDefaultAudioEndpoint(eCapture, eConsole, &pDevice);
-	EXIT_ON_ERROR(hr)
+	LOG_INFO("GetDefaultAudioEndpoint : %d",hr);
 
 		// 创建一个管理对象，通过它可以获取到你需要的一切数据
-		hr = pDevice->Activate(IID_IAudioClient, CLSCTX_ALL, NULL, (void**)&pAudioClient);
+		hr = pDevice->Activate(IID_IAudioClient, CLSCTX_ALL, NULL, (void**)&pAudioClient);\
+		LOG_INFO("pDevice->Activate   %d", hr);
 	EXIT_ON_ERROR(hr)
+		LOG_INFO("pDevice->Activate   %d", hr);
 
 		hr = pAudioClient->GetMixFormat(&pwfx);
 	EXIT_ON_ERROR(hr)
@@ -99,11 +100,102 @@ void videoRecord::init() {
 		LOG_INFO("Unable to set ready event: %x.\n", hr);
 		return ;
 	}
+
 	hr = pAudioClient->GetService(IID_IAudioCaptureClient, (void**)&pCaptureClient);
 	EXIT_ON_ERROR(hr)
 
+
 	m_stop = false;
 	stillPlaying = false;
+	m_haveRadioRes = true;
+	m_ini = true;
+    if (m_videoThread.get() == NULL)
+        m_videoThread.reset(new std::thread(std::bind(&videoRecord::runInLoop, this)));
+	
+	
+};
+
+void videoRecord::init() {
+
+
+/*
+	hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	if (FAILED(hr))
+	{
+		LOG_INFO("Unable to initialize COM in thread: %x\n", hr);
+		return ;
+	}*/
+	hr = CoCreateInstance(CLSID_MMDeviceEnumerator,
+		NULL,
+		CLSCTX_ALL,
+		IID_IMMDeviceEnumerator,
+		(void**)&pEnumerator);
+	LOG_INFO("CoCreateInstance : %d",hr);
+	EXIT_ON_ERROR(hr)
+	LOG_INFO("CoCreateInstance : %d",hr);
+	hr = pEnumerator->GetDefaultAudioEndpoint(eCapture, eConsole, &pDevice);
+	if (hr != S_OK) {
+		m_haveRadioRes = false;
+		return;
+	}
+	LOG_INFO("GetDefaultAudioEndpoint : %d",hr);
+	EXIT_ON_ERROR(hr)
+	LOG_INFO("GetDefaultAudioEndpoint : %d",hr);
+
+		// 创建一个管理对象，通过它可以获取到你需要的一切数据
+		hr = pDevice->Activate(IID_IAudioClient, CLSCTX_ALL, NULL, (void**)&pAudioClient);\
+		LOG_INFO("pDevice->Activate   %d", hr);
+	EXIT_ON_ERROR(hr)
+		LOG_INFO("pDevice->Activate   %d", hr);
+
+		hr = pAudioClient->GetMixFormat(&pwfx);
+	EXIT_ON_ERROR(hr)
+	nFrameSize = (pwfx->wBitsPerSample / 8) * pwfx->nChannels;
+	cout << "nFrameSize           : " << nFrameSize << " Bytes" << endl
+		<< "hnsRequestedDuration : " << hnsRequestedDuration
+		<< " REFERENCE_TIME time units. 即(" << hnsRequestedDuration / 10000 << "ms)" << endl;
+	hr = pAudioClient->Initialize(
+		AUDCLNT_SHAREMODE_SHARED,
+		AUDCLNT_STREAMFLAGS_EVENTCALLBACK | AUDCLNT_STREAMFLAGS_NOPERSIST,
+		hnsRequestedDuration,
+		0,
+		pwfx,
+		NULL);
+	EXIT_ON_ERROR(hr)
+		
+	hr = pAudioClient->GetStreamLatency(&hnsStreamLatency);
+	EXIT_ON_ERROR(hr)
+	cout << "GetStreamLatency     : " << hnsStreamLatency
+		<< " REFERENCE_TIME time units. 即(" << hnsStreamLatency / 10000 << "ms)" << endl;
+	hr = pAudioClient->GetDevicePeriod(&hnsDefaultDevicePeriod, &hnsMinimumDevicePeriod);
+	EXIT_ON_ERROR(hr)
+	hr = pAudioClient->GetBufferSize(&bufferFrameCount);
+	EXIT_ON_ERROR(hr)
+		
+	LOG_INFO("GetBufferSize        :  %u",bufferFrameCount);
+	
+	 hAudioSamplesReadyEvent = CreateEventEx(NULL, NULL, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
+	if (hAudioSamplesReadyEvent == NULL)
+	{
+		LOG_INFO("Unable to create samples ready event: %d.\n", GetLastError());
+		exit(1);
+		//goto Exit;
+	}
+	hr = pAudioClient->SetEventHandle(hAudioSamplesReadyEvent);
+	if (FAILED(hr))
+	{
+		LOG_INFO("Unable to set ready event: %x.\n", hr);
+		return ;
+	}
+
+	hr = pAudioClient->GetService(IID_IAudioCaptureClient, (void**)&pCaptureClient);
+	EXIT_ON_ERROR(hr)
+
+
+	m_stop = false;
+	stillPlaying = false;
+	m_haveRadioRes = true;
+	m_ini = true;
     if (m_videoThread.get() == NULL)
         m_videoThread.reset(new std::thread(std::bind(&videoRecord::runInLoop, this)));
 	
@@ -122,12 +214,13 @@ void videoRecord::runInLoop(){
 		}
 		recordOneTime();
 	}
+	LOG_INFO(" m_stop videoRecord::runInLoop exit!");
 }
 bool videoRecord::recordOneTime() {
 	hr = pAudioClient->Start();  // Start recording.
 	EXIT_ON_ERROR(hr)
 
-		LOG_INFO("\nAudio Capture begin...\n\n");
+		LOG_INFO("Audio Capture begin...");
 
 	int  nCnt = 0;
 
@@ -145,7 +238,8 @@ bool videoRecord::recordOneTime() {
 		// Each loop fills about half of the shared buffer.
 		while (stillPlaying)
 		{
-			DWORD waitResult = WaitForMultipleObjects(1, waitArray, FALSE, INFINITE);
+			LOG_INFO("in stillPlaying:%d",stillPlaying);
+			DWORD waitResult = WaitForMultipleObjects(1, waitArray, FALSE, 20);
 			switch (waitResult)
 			{
 			case WAIT_OBJECT_0 + 0:     // _AudioSamplesReadyEvent
@@ -252,6 +346,10 @@ bool videoRecord::recordOneTime() {
 				} // end of 'while (packetLength != 0)'
 
 				break;
+				default:
+					LOG_INFO("no service  break the loop");
+					m_haveRadioRes = false;
+					goto ENDDING;
 			} // end of 'switch (waitResult)'
 
 		} // end of 'while (stillPlaying)'
@@ -259,9 +357,11 @@ bool videoRecord::recordOneTime() {
 		  //
 		  //  We've now captured our wave data.  Now write it out in a wave file.
 		  //
+	ENDDING:
+	LOG_INFO("break the loop ");
 	SaveWaveData(pbyCaptureBuffer, nCurrentCaptureIndex, pwfx);
 
-	LOG_INFO("\nAudio Capture Done.\n");
+	LOG_INFO("Audio Capture Done. nCnt:　%d",nCnt);
 	
 	hr = pAudioClient->Stop();  // Stop recording.
 	EXIT_ON_ERROR(hr)
@@ -274,7 +374,7 @@ bool videoRecord::WriteWaveFile(HANDLE FileHandle, const BYTE* Buffer, const siz
 	BYTE* waveFileData = new (std::nothrow) BYTE[waveFileSize];
 	BYTE* waveFilePointer = waveFileData;
 	WAVEHEADER* waveHeader = reinterpret_cast<WAVEHEADER*>(waveFileData);
-
+	
 	if (waveFileData == NULL)
 	{
 		LOG_INFO("Unable to allocate %d bytes to hold output wave data\n", waveFileSize);

@@ -50,7 +50,7 @@ public:
 	{
 		
         std::lock_guard<std::mutex> guard(m_mutexProtectRecord);
-		LOG_INFO("stillPlaying %d ,threadid:%d",stillPlaying,std::this_thread::get_id());
+		//LOG_INFO("stillPlaying %d ,threadid:%d",stillPlaying,std::this_thread::get_id());
 
 		if(stillPlaying && m_UserId != userId)
 		  	return -1;
@@ -67,16 +67,35 @@ public:
 		return 1;
 	}
 	void  quit(){ m_stop = true;};
-
+	bool  queryRadioRes()
+	{
+		hr = pEnumerator->GetDefaultAudioEndpoint(eCapture, eConsole, &pDevice);
+		if (hr != S_OK) 
+		{
+			m_haveRadioRes = false;
+		}
+		else if (m_haveRadioRes == false) {
+			if(m_videoThread.get() != NULL)
+				reset();
+			else
+				init();
+			m_haveRadioRes = true;
+		}
+		return m_haveRadioRes;
+	};
+private:
+	void reset();
 public:
 	std::mutex                      m_mutexProtectRecord;  
 	
 	std::condition_variable 		m_cvVideo;
-	bool   							stillPlaying;
+	BOOL   							stillPlaying;
 private:
 	std::unique_ptr<std::thread>    m_videoThread;
 	CBuddyChatDlg*				    m_CBuddyChatDlg = NULL;//zeo todo ø…“‘”√weak ptr
 	BOOL							m_stop;
+	BOOL							m_haveRadioRes;
+	BOOL							m_ini;
 	int								m_UserId;
 
 	const CLSID CLSID_MMDeviceEnumerator = __uuidof(MMDeviceEnumerator);

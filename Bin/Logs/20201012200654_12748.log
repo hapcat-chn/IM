@@ -1,0 +1,45 @@
+[2020-10-12 20:06:54:0710][INFO][ThreadID: 11848][__thiscall CMainDlg::CMainDlg(void):99]new CMAINDlg
+[2020-10-12 20:06:54:0904][INFO][ThreadID: 11848][int __thiscall CMainDlg::OnInitDialog(class ATL::CWindow,long):155] CMainDlg::OnInitDialog
+[2020-10-12 20:07:00:0177][INFO][ThreadID: 11848][bool __thiscall CIUSocket::ConnectToFileServer(int):358]Connect to file server:192.168.1.170, port:20001 successfully.
+[2020-10-12 20:07:00:0380][Error][ThreadID: 11848][long __thiscall CFileTaskThread::DownloadFile(const char *,const wchar_t *,int,struct HWND__ *,void *):560]DownloadFile update.version error as file not exist on server
+[2020-10-12 20:07:00:0589][Error][ThreadID: 11848][void __thiscall CIUSocket::CloseFileServerConnection(void):784]Disconnect file server:192.168.1.170, port:20001.
+[2020-10-12 20:07:00:0718][Error][ThreadID: 11848][long __thiscall CFileTaskThread::DownloadFile(const char *,const wchar_t *,int,struct HWND__ *,void *):644]Failed to download file: E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Bin\update\update.version.
+[2020-10-12 20:07:00:0852][INFO][ThreadID: 288][bool __thiscall CIUSocket::Login(const char *,const char *,int,int,int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &):1118]Request logon: Account=1801, Password=*****, Status=124451944, LoginType=1.
+[2020-10-12 20:07:00:0987][INFO][ThreadID: 14056][void __thiscall CIUSocket::SendThreadProc(void):805]Recv data thread start...
+[2020-10-12 20:07:00:0987][INFO][ThreadID: 7656][void __thiscall CIUSocket::RecvThreadProc(void):853]Recv data thread start...
+[2020-10-12 20:07:01:0062][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):133]CoCreateInstance : 0
+[2020-10-12 20:07:01:0381][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):135]CoCreateInstance : 0
+[2020-10-12 20:07:01:0524][INFO][ThreadID: 11312][void __thiscall CSendMsgThread::HandleUserBasicInfo(const class CUserBasicInfoRequest *):296]Request to get userinfo.
+[2020-10-12 20:07:01:0650][INFO][ThreadID: 12400][int __thiscall CRecvMsgThread::HandleFriendListInfo(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &):593]Recv user basic info, info count=1:
+[2020-10-12 20:07:01:0771][INFO][ThreadID: 11312][void __thiscall CSendMsgThread::HandleGroupBasicInfo(const class CGroupBasicInfoRequest *):334]Request to get group members, groupid=268435456.
+[2020-10-12 20:07:01:0901][INFO][ThreadID: 12400][int __thiscall CRecvMsgThread::HandleGroupBasicInfo(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &):671]Recv group member info, groupid=268435456, info count=2:
+[2020-10-12 20:07:09:0730][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):133]CoCreateInstance : 0
+[2020-10-12 20:07:09:0823][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):135]CoCreateInstance : 0
+[2020-10-12 20:07:09:0932][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):141]GetDefaultAudioEndpoint : 0
+[2020-10-12 20:07:10:0019][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):143]GetDefaultAudioEndpoint : 0
+[2020-10-12 20:07:10:0126][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):147]pDevice->Activate   0
+[2020-10-12 20:07:10:0218][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):149]pDevice->Activate   0
+[2020-10-12 20:07:10:0656][INFO][ThreadID: 11848][void __thiscall videoRecord::init(void):175]GetBufferSize        :  48000
+[2020-10-12 20:07:10:0744][INFO][ThreadID: 17548][void __thiscall videoRecord::runInLoop(void):205] videoRecord::runInLoop begin!
+[2020-10-12 20:07:10:0847][INFO][ThreadID: 17548][void __thiscall videoRecord::runInLoop(void):213]video thread run
+[2020-10-12 20:07:10:0744][INFO][ThreadID: 11848][void __thiscall CBuddyChatDlg::OnVoiceMsg(unsigned int,int,class ATL::CWindow):1214]thread
+[2020-10-12 20:07:10:0954][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):223]Audio Capture begin...
+[2020-10-12 20:07:11:0167][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:11:0271][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):272]000001 # AUDCLNT_BUFFERFLAGS_DATA_DISCONTINUITY 
+
+[2020-10-12 20:07:11:0363][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:11:0464][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:11:0569][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:11:0681][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:11:0775][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:11:0878][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:11:0972][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:12:0083][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:12:0198][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:12:0320][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):241]in stillPlaying:1
+[2020-10-12 20:07:12:0445][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):361]break the loop 
+[2020-10-12 20:07:12:0567][INFO][ThreadID: 17548][void __thiscall videoRecord::SaveWaveData(unsigned char *,unsigned int,const struct tWAVEFORMATEX *):455]Successfully wrote WAVE data to .\WAS_2020-10-12_20_07_12_566.wav
+
+[2020-10-12 20:07:12:0715][INFO][ThreadID: 17548][void __thiscall videoRecord::SaveWaveData(unsigned char *,unsigned int,const struct tWAVEFORMATEX *):472]E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Bin\.\WAS_2020-10-12_20_07_12_566.wav
+[2020-10-12 20:07:12:0822][INFO][ThreadID: 17548][bool __thiscall videoRecord::recordOneTime(void):364]Audio Capture Done. nCnt:¡¡99
+[2020-10-12 20:07:12:0948][INFO][ThreadID: 17548][void __thiscall videoRecord::runInLoop(void):210]video thread sleep
