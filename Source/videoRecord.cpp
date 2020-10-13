@@ -26,10 +26,10 @@ videoRecord::videoRecord(){
 	  m_stop       = true;
 };
 videoRecord::~videoRecord(){
-	
-    if (m_videoThread.get() )
-        m_videoThread->detach();
 	quit();
+    if (m_videoThread.get() )
+        m_videoThread->join();
+	LOG_INFO("~videoRecord thread ptr: %x",m_videoThread.get());
 
 	CoTaskMemFree(pwfx);
 	SAFE_RELEASE(pEnumerator)
@@ -116,6 +116,10 @@ void videoRecord::reset() {
 };
 
 void videoRecord::init() {
+	{
+		std::unique_lock<std::mutex> guard(m_mutexProtectState);
+		m_state = RECORDSTATE_IDLE;
+	}
 
 
 /*
@@ -206,13 +210,14 @@ void videoRecord::runInLoop(){
 	while(!m_stop){
 		{
 			std::unique_lock<std::mutex> guard(m_mutexProtectRecord);
-			while (stillPlaying == false){
+			while (stillPlaying == false && !m_stop){
 				LOG_INFO("video thread sleep");
 				m_cvVideo.wait(guard);
 			}
 			LOG_INFO("video thread run");
 		}
-		recordOneTime();
+		if(!m_stop)
+			recordOneTime();
 	}
 	LOG_INFO(" m_stop videoRecord::runInLoop exit!");
 }
@@ -236,8 +241,12 @@ bool videoRecord::recordOneTime() {
 		//stillPlaying = true;
 
 		// Each loop fills about half of the shared buffer.
-		while (stillPlaying)
+		while (!m_stop && stillPlaying)
 		{
+			{
+				std::unique_lock<std::mutex> guard(m_mutexProtectState);
+				m_state = RECORDSTATE_BUSY;
+			}
 			LOG_INFO("in stillPlaying:%d",stillPlaying);
 			DWORD waitResult = WaitForMultipleObjects(1, waitArray, FALSE, 20);
 			switch (waitResult)
@@ -358,12 +367,20 @@ bool videoRecord::recordOneTime() {
 		  //  We've now captured our wave data.  Now write it out in a wave file.
 		  //
 	ENDDING:
-	LOG_INFO("break the loop ");
+	{
+		std::unique_lock<std::mutex> guard(m_mutexProtectState);
+		m_state = RECORDSTATE_WRITE_TO_FILE;
+	}
 	SaveWaveData(pbyCaptureBuffer, nCurrentCaptureIndex, pwfx);
 
-	LOG_INFO("Audio Capture Done. nCnt:¡¡%d",nCnt);
+	//LOG_INFO("Audio Capture Done. nCnt:¡¡%d",nCnt);
 	
 	hr = pAudioClient->Stop();  // Stop recording.
+	{
+		std::unique_lock<std::mutex> guard(m_mutexProtectState);
+		m_state = RECORDSTATE_IDLE;
+	}
+
 	EXIT_ON_ERROR(hr)
 		return true;
 };

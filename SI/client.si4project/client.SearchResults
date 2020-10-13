@@ -1,11 +1,12 @@
----- m_haveRadioRes Matches (10 in 2 files) ----
-videoRecord::videoRecord in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	m_haveRadioRes = false;
-videoRecord::reset in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_haveRadioRes = false;
-videoRecord::reset in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	m_haveRadioRes = true;
-videoRecord::init in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_haveRadioRes = false;
-videoRecord::init in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	m_haveRadioRes = true;
-videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 			m_haveRadioRes = false;
-videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		else if (m_haveRadioRes == false) {
-videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 			m_haveRadioRes = true;
-videoRecord::queryRadioRes in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		return m_haveRadioRes;
-videoRecord in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	BOOL							m_haveRadioRes;
+---- m_state Matches (11 in 3 files) ----
+WTL in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : // Note: You can either use m_State and m_NewState to store the state information
+WTL::CBufferedAnimationImpl in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 	TState m_State;
+WTL::CBufferedAnimationImpl::SetState in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 		m_State = State;
+WTL::CBufferedAnimationImpl::AreStatesEqual in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 		return (m_State == m_NewState);
+WTL::CBufferedAnimationImpl::DoAnimationPaint in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 				pT->DoPaint(hdcFrom, rect, m_State);
+videoRecord::init in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_state = RECORDSTATE_IDLE;
+videoRecord::recordOneTime in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 				m_state = RECORDSTATE_BUSY;
+videoRecord::recordOneTime in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_state = RECORDSTATE_WRITE_TO_FILE;
+videoRecord::recordOneTime in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_state = RECORDSTATE_IDLE;
+videoRecord::changeState in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 			if(m_state != RECORDSTATE_IDLE)
+videoRecord in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	RECORDSTATE						m_state;

@@ -37,6 +37,13 @@ struct WAVEHEADER
 //  Static RIFF header, we'll append the format to it.
 class CBuddyChatDlg;
 
+enum RECORDSTATE
+{
+	RECORDSTATE_IDLE,
+	RECORDSTATE_BUSY,
+	RECORDSTATE_WRITE_TO_FILE
+};
+
 class videoRecord {
 public:
 	~videoRecord();
@@ -60,13 +67,26 @@ public:
 			m_UserId = -1;
 			return 0;
 		}
+		
+		{
+			std::unique_lock<std::mutex> guard(m_mutexProtectState);
+			if(m_state != RECORDSTATE_IDLE)
+				return -1;
+		}
 		m_CBuddyChatDlg = BuddyChatDlg;
 		m_UserId = userId;
 		stillPlaying = true;
 		m_cvVideo.notify_one();
 		return 1;
 	}
-	void  quit(){ m_stop = true;};
+	void  quit(){ 
+		m_stop = true;
+		LOG_INFO("m_stop = true");
+		{
+			std::lock_guard<std::mutex> guard(m_mutexProtectRecord);
+			m_cvVideo.notify_one();
+		}
+	};
 	bool  queryRadioRes()
 	{
 		hr = pEnumerator->GetDefaultAudioEndpoint(eCapture, eConsole, &pDevice);
@@ -87,7 +107,7 @@ private:
 	void reset();
 public:
 	std::mutex                      m_mutexProtectRecord;  
-	
+	std::mutex                      m_mutexProtectState;
 	std::condition_variable 		m_cvVideo;
 	BOOL   							stillPlaying;
 private:
@@ -97,7 +117,7 @@ private:
 	BOOL							m_haveRadioRes;
 	BOOL							m_ini;
 	int								m_UserId;
-
+	RECORDSTATE						m_state;
 	const CLSID CLSID_MMDeviceEnumerator = __uuidof(MMDeviceEnumerator);
 	const IID   IID_IMMDeviceEnumerator = __uuidof(IMMDeviceEnumerator);
 	const IID   IID_IAudioClient = __uuidof(IAudioClient);
