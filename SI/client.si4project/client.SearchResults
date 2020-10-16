@@ -1,12 +1,2 @@
----- m_state Matches (11 in 3 files) ----
-WTL in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : // Note: You can either use m_State and m_NewState to store the state information
-WTL::CBufferedAnimationImpl in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 	TState m_State;
-WTL::CBufferedAnimationImpl::SetState in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 		m_State = State;
-WTL::CBufferedAnimationImpl::AreStatesEqual in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 		return (m_State == m_NewState);
-WTL::CBufferedAnimationImpl::DoAnimationPaint in atltheme.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source\wtl9.0) : 				pT->DoPaint(hdcFrom, rect, m_State);
-videoRecord::init in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_state = RECORDSTATE_IDLE;
-videoRecord::recordOneTime in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 				m_state = RECORDSTATE_BUSY;
-videoRecord::recordOneTime in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_state = RECORDSTATE_WRITE_TO_FILE;
-videoRecord::recordOneTime in videoRecord.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 		m_state = RECORDSTATE_IDLE;
-videoRecord::changeState in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 			if(m_state != RECORDSTATE_IDLE)
-videoRecord in videoRecord.h (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 	RECORDSTATE						m_state;
+---- ☆录音结束，请选择是否发送☆ Matches (1 in 1 files) ----
+CBuddyChatDlg::OnVoiceMsg in BuddyChatDlg.cpp (E:\VSroot\flamingo-master\flamingo-master\flamingoclient\Source) : 			RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            					☆录音结束，请选择是否发送☆\r\n"), 

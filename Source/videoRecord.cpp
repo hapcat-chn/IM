@@ -106,10 +106,10 @@ void videoRecord::reset() {
 
 
 	m_stop = false;
-	stillPlaying = false;
 	m_haveRadioRes = true;
 	m_ini = true;
-    if (m_videoThread.get() == NULL)
+
+	if (m_videoThread.get() == NULL)
         m_videoThread.reset(new std::thread(std::bind(&videoRecord::runInLoop, this)));
 	
 	
@@ -210,7 +210,9 @@ void videoRecord::runInLoop(){
 	while(!m_stop){
 		{
 			std::unique_lock<std::mutex> guard(m_mutexProtectRecord);
-			while (stillPlaying == false && !m_stop){
+			while (m_stop == FALSE && 
+				  (stillPlaying == FALSE ||m_haveRadioRes == FALSE)    )
+			{
 				LOG_INFO("video thread sleep");
 				m_cvVideo.wait(guard);
 			}
@@ -225,7 +227,6 @@ bool videoRecord::recordOneTime() {
 	hr = pAudioClient->Start();  // Start recording.
 	EXIT_ON_ERROR(hr)
 
-		LOG_INFO("Audio Capture begin...");
 
 	int  nCnt = 0;
 
@@ -238,7 +239,6 @@ bool videoRecord::recordOneTime() {
 	waitArray[0] = hAudioSamplesReadyEvent;
 
 
-		//stillPlaying = true;
 
 		// Each loop fills about half of the shared buffer.
 		while (!m_stop && stillPlaying)
@@ -247,7 +247,7 @@ bool videoRecord::recordOneTime() {
 				std::unique_lock<std::mutex> guard(m_mutexProtectState);
 				m_state = RECORDSTATE_BUSY;
 			}
-			LOG_INFO("in stillPlaying:%d",stillPlaying);
+
 			DWORD waitResult = WaitForMultipleObjects(1, waitArray, FALSE, 20);
 			switch (waitResult)
 			{
@@ -342,14 +342,7 @@ bool videoRecord::recordOneTime() {
 						}
 					//////////////////////////////////////////////////////////////////////////
 
-					// 采集一定数目个buffer后退出
-				
-					if (nCnt == 1000)
-					{
-						//stillPlaying = false;
 
-						//break;
-					}
 					
 
 				} // end of 'while (packetLength != 0)'
@@ -361,8 +354,7 @@ bool videoRecord::recordOneTime() {
 					goto ENDDING;
 			} // end of 'switch (waitResult)'
 
-		} // end of 'while (stillPlaying)'
-
+		} 
 		  //
 		  //  We've now captured our wave data.  Now write it out in a wave file.
 		  //
@@ -382,7 +374,8 @@ bool videoRecord::recordOneTime() {
 	}
 
 	EXIT_ON_ERROR(hr)
-		return true;
+
+	return true;
 };
 
 bool videoRecord::WriteWaveFile(HANDLE FileHandle, const BYTE* Buffer, const size_t BufferSize, const WAVEFORMATEX* WaveFormat)
@@ -488,7 +481,8 @@ void videoRecord::SaveWaveData(BYTE* CaptureBuffer, size_t BufferSize, const WAV
 		strFileName.push_back(waveFileName[i]);
 	LOG_INFO(strFileName.c_str());
 	::sndPlaySound(strFileName.c_str(), SND_ASYNC);
-	m_CBuddyChatDlg->m_voiceFileName = strFileName;
+	if(m_CBuddyChatDlg)
+		m_CBuddyChatDlg->m_voiceFileName = strFileName;
 }
 
 

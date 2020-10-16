@@ -125,9 +125,16 @@ public:
 	void OnUpdateBuddySign();													// 更新好友签名通知
 	void OnUpdateBuddyHeadPic();												// 更新好友头像通知
 	void sendVoiceMsg(bool isSend) {
+		
 		if(isSend){
+			if(m_voiceFileName.size() == 0)
+			{
+				RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                          ☆发送失败，检查录音设备☆\n"), _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
+				return ;
+			}
 			RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆语音消息发送中☆\n"), _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
 			SendOfflineFile((PCTSTR)m_voiceFileName.c_str()); 
+			
 		}else
 			RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ☆取消发送语音☆\n"), _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
 	}

@@ -44,6 +44,9 @@ enum RECORDSTATE
 	RECORDSTATE_WRITE_TO_FILE
 };
 
+#define CHANGE_TO_IDLE_RECORD  0
+#define CHANGE_TO_BUSY_RECORD  1
+#define WS_ERROR              -1
 class videoRecord {
 public:
 	~videoRecord();
@@ -53,40 +56,54 @@ public:
 	bool recordOneTime();
 	void SaveWaveData(BYTE* CaptureBuffer, size_t BufferSize, const WAVEFORMATEX* WaveFormat);
 	bool WriteWaveFile(HANDLE FileHandle, const BYTE* Buffer, const size_t BufferSize, const WAVEFORMATEX* WaveFormat);
+
+	void chatClosed(int userId , CBuddyChatDlg* BuddyChatDlg){
+		std::lock_guard<std::mutex> guard(m_mutexProtectRecord);
+		if(stillPlaying && m_UserId == userId && m_CBuddyChatDlg == BuddyChatDlg){
+			m_CBuddyChatDlg = NULL;
+			stillPlaying = false;
+			m_UserId = -1;
+			return;
+		}
+	}
 	int changeState(int userId , CBuddyChatDlg* BuddyChatDlg)//仅其他线程调用
 	{
 		
         std::lock_guard<std::mutex> guard(m_mutexProtectRecord);
-		//LOG_INFO("stillPlaying %d ,threadid:%d",stillPlaying,std::this_thread::get_id());
-
-		if(stillPlaying && m_UserId != userId)
-		  	return -1;
-		
-		if(stillPlaying && m_UserId == userId){
-			stillPlaying = false;
-			m_UserId = -1;
-			return 0;
-		}
-		
+		//LOG_INFO("userId %d , BuddyChatDlg: %x m_UserId : %d",userId,BuddyChatDlg,m_UserId);
+		if(stillPlaying)
 		{
-			std::unique_lock<std::mutex> guard(m_mutexProtectState);
-			if(m_state != RECORDSTATE_IDLE)
-				return -1;
+			if(m_UserId == userId)
+			{
+				m_CBuddyChatDlg = NULL;
+				stillPlaying    = false;
+				m_UserId        = -1;
+				return CHANGE_TO_IDLE_RECORD;
+			}else{
+				return WS_ERROR;
+			}
+			
 		}
-		m_CBuddyChatDlg = BuddyChatDlg;
-		m_UserId = userId;
-		stillPlaying = true;
-		m_cvVideo.notify_one();
-		return 1;
-	}
-	void  quit(){ 
-		m_stop = true;
-		LOG_INFO("m_stop = true");
+		else
 		{
-			std::lock_guard<std::mutex> guard(m_mutexProtectRecord);
+			
+			{
+				std::unique_lock<std::mutex> guard(m_mutexProtectState);
+				if(m_state != RECORDSTATE_IDLE)
+					return WS_ERROR;
+			}
+		
+			m_CBuddyChatDlg = BuddyChatDlg;
+			m_UserId        = userId;
+			stillPlaying    = true;
 			m_cvVideo.notify_one();
+			return CHANGE_TO_BUSY_RECORD;
 		}
-	};
+
+		
+		
+	}
+
 	bool  queryRadioRes()
 	{
 		hr = pEnumerator->GetDefaultAudioEndpoint(eCapture, eConsole, &pDevice);
@@ -105,13 +122,22 @@ public:
 	};
 private:
 	void reset();
+	void  quit(){ 
+		m_stop = true;
+		LOG_INFO("m_stop = true");
+		{
+			std::lock_guard<std::mutex> guard(m_mutexProtectRecord);
+			m_cvVideo.notify_one();
+		}
+	};
 public:
 	std::mutex                      m_mutexProtectRecord;  
 	std::mutex                      m_mutexProtectState;
 	std::condition_variable 		m_cvVideo;
-	BOOL   							stillPlaying;
+	
 private:
 	std::unique_ptr<std::thread>    m_videoThread;
+	BOOL   							stillPlaying;//需要线程安全么
 	CBuddyChatDlg*				    m_CBuddyChatDlg = NULL;//zeo todo 可以用weak ptr
 	BOOL							m_stop;
 	BOOL							m_haveRadioRes;

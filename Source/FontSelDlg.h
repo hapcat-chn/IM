@@ -16,9 +16,9 @@ extern TCHAR g_cHotKey;						// 提取消息热键
 //BOOL SaveMiscConfig(LPCTSTR lpszFileName);	// 保存杂项配置
 enum RADIOSTATE
 {
-	RADIOSTATE_IDLE,
-	RADIOSTATE_BUSY,
-	RADIOSTATE_FINISH
+	RADIO_DLG_STATE_IDLE,
+	RADIO_DLG_STATE_BUSY,
+	RADIO_DLG_STATE_FINISH
 };
 class CFontSelDlg : public CDialogImpl<CFontSelDlg>
 {

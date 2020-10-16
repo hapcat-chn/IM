@@ -207,7 +207,7 @@ void CFontSelDlg::OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl)
 void CVideoSelDlg::OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	ShowWindow(SW_HIDE);
-	m_RadioState = RADIOSTATE_IDLE;
+	m_RadioState = RADIO_DLG_STATE_IDLE;
 	m_CBuddyChatDlg->sendVoiceMsg(true);
 }
 
@@ -230,7 +230,7 @@ void CFontSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
 void CVideoSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	ShowWindow(SW_HIDE);
-	m_RadioState = RADIOSTATE_IDLE;
+	m_RadioState = RADIO_DLG_STATE_IDLE;
 	m_CBuddyChatDlg->sendVoiceMsg(false);
 }
 
@@ -482,7 +482,7 @@ BOOL CFontSelDlg::Init()
 BOOL CVideoSelDlg::Init()
 {
 
-	m_RadioState = RADIOSTATE_IDLE;
+	m_RadioState = RADIO_DLG_STATE_IDLE;
 	m_SkinDlg.SubclassWindow(m_hWnd);
 	m_SkinDlg.SetBgPic(_T("ChatFrame_FontSetup_background.bmp"), CRect(0, 1, 1, 0));
 	
